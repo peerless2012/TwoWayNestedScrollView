@@ -16,7 +16,7 @@
 package com.peerless2012.alldirectionscrollviewdemo;
 
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -47,7 +47,6 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
@@ -58,6 +57,7 @@ import android.widget.ScrollView;
 /**
  * @author wangzhiming Describe: 2015年8月24日 下午5:36:19
  */
+@SuppressLint("Override")
 public class NestedScrollView extends FrameLayout implements
 		NestedScrollingParent, NestedScrollingChild {
 	static final int ANIMATED_SCROLL_GAP = 250;
@@ -108,7 +108,7 @@ public class NestedScrollView extends FrameLayout implements
 	 * When set to true, the scroll view measure its child to make it fill the
 	 * currently visible area.
 	 */
-	private boolean mFillViewport;
+	private boolean mFillViewport = true;
 
 	/**
 	 * Whether arrow scrolling is animated.

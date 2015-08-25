@@ -7,10 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	private ScrollView scrollView;
 	private HorizontalScrollView horizontalScrollView;
+	TextView textView;
 	StateListDrawable st;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

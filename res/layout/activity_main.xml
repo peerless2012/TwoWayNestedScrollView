@@ -22,7 +22,7 @@
         <TextView
             android:textSize="22sp"
             android:text="@string/action_settings" 
-            android:layout_width="500dp"
+            android:layout_width="1000dp"
             android:layout_height="500dp"/>
     </com.peerless2012.alldirectionscrollviewdemo.NestedScrollView>
 </RelativeLayout>

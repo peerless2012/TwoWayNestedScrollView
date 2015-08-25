@@ -713,9 +713,9 @@ public class NestedScrollView extends FrameLayout implements
 				if (parent != null) {
 					parent.requestDisallowInterceptTouchEvent(true);
 				}
-			}else if (xDiff > mTouchSlop && (getNestedScrollAxes() & ViewCompat.SCROLL_AXIS_HORIZONTAL) == 0) {
+			}else if (xDiff > mTouchSlop && (getNestedScrollAxes() & ViewCompat.SCROLL_AXIS_VERTICAL) == 0) {
 				mIsBeingDragged = true;
-				mLastMotionX = y;
+				mLastMotionX = x;
 				initVelocityTrackerIfNotExists();
 				mVelocityTracker.addMovement(ev);
 				mNestedXOffset = 0;
@@ -732,6 +732,7 @@ public class NestedScrollView extends FrameLayout implements
 			final int x = (int) ev.getX();
 			if (!inChild(x, y)) {
 				mIsBeingDragged = false;
+				scrollDirection = DIRECTION_INVALIDATE;
 				recycleVelocityTracker();
 				break;
 			}
@@ -812,11 +813,13 @@ public class NestedScrollView extends FrameLayout implements
 			// Remember where the motion event started
 			mLastMotionX = (int) ev.getX();
 			mLastMotionY = (int) ev.getY();
+			mIsBeingDragged = false;
 			mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
 			startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
 			break;
 		}
 		case MotionEvent.ACTION_MOVE:
+			Log.i(TAG, "ACTION_MOVE  mIsBeingDragged  " + mIsBeingDragged+"   scrollDirection  " + scrollDirection);
 			final int activePointerIndex = MotionEventCompat.findPointerIndex(
 					ev, mActivePointerId);
 			if (activePointerIndex == -1) {
@@ -829,8 +832,7 @@ public class NestedScrollView extends FrameLayout implements
 			int deltaX = mLastMotionX - x;
 			final int y = (int) MotionEventCompat.getY(ev, activePointerIndex);
 			int deltaY = mLastMotionY - y;
-			if (dispatchNestedPreScroll(deltaX, deltaY, mScrollConsumed,
-					mScrollOffset)) {
+			if (dispatchNestedPreScroll(deltaX, deltaY, mScrollConsumed, mScrollOffset)) {
 				deltaX -= mScrollConsumed[0];
 				deltaY -= mScrollConsumed[1];
 				vtev.offsetLocation(mScrollOffset[0], mScrollOffset[1]);
@@ -1478,7 +1480,6 @@ public class NestedScrollView extends FrameLayout implements
 			// Nothing to do.
 			return;
 		}
-		//TODO 处理  fuck
 		long duration = AnimationUtils.currentAnimationTimeMillis()
 				- mLastScroll;
 		if (duration > ANIMATED_SCROLL_GAP) {
@@ -1615,6 +1616,7 @@ public class NestedScrollView extends FrameLayout implements
 			int oldY = getScrollY();
 			int x = mScroller.getCurrX();
 			int y = mScroller.getCurrY();
+//			Log.i(TAG, "computeScroll  currentX  " +x +"    currentY  " + y );
 			if (oldX != x || oldY != y) {
 				final int horizontalRange = getHorizontalScrollRange();
 				final int verticalRange = getVerticalScrollRange();
@@ -1901,19 +1903,26 @@ public class NestedScrollView extends FrameLayout implements
 	 */
 	public void flingVertical(int velocityY) {
 		if (getChildCount() > 0) {
+			int width = getWidth() - getPaddingRight() - getPaddingLeft();
 			int height = getHeight() - getPaddingBottom() - getPaddingTop();
 			int bottom = getChildAt(0).getHeight();
 
-			mScroller.fling(getScrollX(), getScrollY(), 0, velocityY, 0, 0, 0,Math.max(0, bottom - height), 0, height / 2);
+			mScroller.fling(getScrollX(), getScrollY(), 0, velocityY, 0, width, 0,Math.max(0, bottom - height),width/2,0);
 
 			ViewCompat.postInvalidateOnAnimation(this);
 		}
 	}
+	/**
+	 * void android.support.v4.widget.ScrollerCompat.fling
+	 * (int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY)
+	 * @param velocityX
+	 */
 	public void flingHorizontal(int velocityX) {
 		if (getChildCount() > 0) {
 			int width = getWidth() - getPaddingRight() - getPaddingLeft();
+			int height = getHeight() - getPaddingBottom() - getPaddingTop();
 			int right = getChildAt(0).getWidth();
-			mScroller.fling(getScrollX(), getScrollY(), velocityX, 0,Math.max(0, right - width), 0, 0, 0, width / 2,0);
+			mScroller.fling(getScrollX(), getScrollY(), velocityX, 0,0, Math.max(0, right - width), 0, height,0,height / 2);
 			ViewCompat.postInvalidateOnAnimation(this);
 		}
 	}

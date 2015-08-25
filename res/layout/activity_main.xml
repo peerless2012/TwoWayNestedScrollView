@@ -14,15 +14,15 @@
         android:text="@string/hello_world" />
 
     <com.peerless2012.alldirectionscrollviewdemo.NestedScrollView 
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
         >
         
         <TextView
+            android:textSize="22sp"
             android:text="@string/action_settings" 
-            android:layout_width="250dp"
-            android:background="@android:color/holo_blue_bright"
-            android:layout_height="250dp"/>
+            android:layout_width="500dp"
+            android:layout_height="500dp"/>
     </com.peerless2012.alldirectionscrollviewdemo.NestedScrollView>
 </RelativeLayout>

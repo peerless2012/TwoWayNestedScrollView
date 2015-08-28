@@ -989,11 +989,11 @@ public class NestedScrollView extends FrameLayout implements
 
 				if (scrollDirection == DIRECTION_VERTICAL) {
 					if ((Math.abs(verticalInitialVelocity) > mMinimumVelocity)) {
-						flingWithNestedDispatchVertical(-verticalInitialVelocity);
+//						flingWithNestedDispatchVertical(-verticalInitialVelocity);
 					}
 				}else if (scrollDirection == DIRECTION_HORIZONTAL){
 					if ((Math.abs(horizontalInitialVelocity) > mMinimumVelocity)) {
-						flingWithNestedDispatchHorizontal(-horizontalInitialVelocity);
+//						flingWithNestedDispatchHorizontal(-horizontalInitialVelocity);
 					}
 				}
 				mActivePointerId = INVALID_POINTER;
@@ -1093,8 +1093,8 @@ public class NestedScrollView extends FrameLayout implements
 
 	protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX,
 			boolean clampedY) {
-		Log.i("NestedScrollView", "scrollX "+scrollX+"   scrollY  "+scrollY);
 		super.scrollTo(scrollX, scrollY);
+//		getChildAt(0).scrollTo(scrollX, scrollY);
 	}
 
 	boolean overScrollByCompat(int deltaX, int deltaY, int scrollX,
@@ -1613,11 +1613,14 @@ public class NestedScrollView extends FrameLayout implements
 
 	@Override
 	public void computeScroll() {
+		int measuredHeight = getMeasuredHeight();
+		int measuredWidth = getMeasuredHeight();
 		if (mScroller.computeScrollOffset()) {
 			int oldX = getScrollX();
 			int oldY = getScrollY();
 			int x = mScroller.getCurrX();
 			int y = mScroller.getCurrY();
+			Log.i("NestedScrollView", "oldX = "+oldX+"   oldY = "+oldY+"    x = "+x+"   y = "+y);
 			if (oldX != x || oldY != y) {
 				final int horizontalRange = getHorizontalScrollRange();
 				final int verticalRange = getVerticalScrollRange();
@@ -2008,39 +2011,39 @@ public class NestedScrollView extends FrameLayout implements
 		if (mEdgeGlowTop != null) {
 			final int scrollX = getScrollX();
 			//TODO 修正
-			if (!mEdgeGlowLeft.isFinished()) {
-				final int restoreCount = canvas.save();
-				final int height = getHeight() - getPaddingTop()
-						- getPaddingBottom();
-				
-				canvas.translate(getPaddingLeft(), Math.min(0, scrollX));
-				mEdgeGlowLeft.setSize(getWidth(), height);
-				if (mEdgeGlowLeft.draw(canvas)) {
-					ViewCompat.postInvalidateOnAnimation(this);
-				}
-				canvas.restoreToCount(restoreCount);
-			}
-			if (!mEdgeGlowRight.isFinished()) {
-				final int restoreCount = canvas.save();
-				final int height = getHeight() - getPaddingTop()
-						- getPaddingBottom();
-
-				canvas.translate(-height + getPaddingTop(),
-						Math.max(getHorizontalScrollRange(), scrollX) + height);
-				canvas.rotate(180, 0, height);
-				mEdgeGlowRight.setSize(getWidth(), height);
-				if (mEdgeGlowRight.draw(canvas)) {
-					ViewCompat.postInvalidateOnAnimation(this);
-				}
-				canvas.restoreToCount(restoreCount);
-			}
+//			if (!mEdgeGlowLeft.isFinished()) {
+//				final int restoreCount = canvas.save();
+//				final int height = getHeight() - getPaddingTop()
+//						- getPaddingBottom();
+//				
+//				canvas.translate(getPaddingLeft(), Math.min(0, scrollX));
+//				mEdgeGlowLeft.setSize(getWidth(), height);
+//				if (mEdgeGlowLeft.draw(canvas)) {
+//					ViewCompat.postInvalidateOnAnimation(this);
+//				}
+//				canvas.restoreToCount(restoreCount);
+//			}
+//			if (!mEdgeGlowRight.isFinished()) {
+//				final int restoreCount = canvas.save();
+//				final int height = getHeight() - getPaddingTop()
+//						- getPaddingBottom();
+//
+//				canvas.translate(-height + getPaddingTop(),
+//						Math.max(getHorizontalScrollRange(), scrollX) + height);
+//				canvas.rotate(180, 0, height);
+//				mEdgeGlowRight.setSize(getWidth(), height);
+//				if (mEdgeGlowRight.draw(canvas)) {
+//					ViewCompat.postInvalidateOnAnimation(this);
+//				}
+//				canvas.restoreToCount(restoreCount);
+//			}
 			final int scrollY = getScrollY();
 			if (!mEdgeGlowTop.isFinished()) {
 				final int restoreCount = canvas.save();
 				final int width = getWidth() - getPaddingLeft()
 						- getPaddingRight();
 
-				canvas.translate(getPaddingLeft(), Math.min(0, scrollY));
+				canvas.translate(scrollX + getPaddingLeft(), Math.min(0, scrollY));
 				mEdgeGlowTop.setSize(width, getHeight());
 				if (mEdgeGlowTop.draw(canvas)) {
 					ViewCompat.postInvalidateOnAnimation(this);
@@ -2053,7 +2056,7 @@ public class NestedScrollView extends FrameLayout implements
 						- getPaddingRight();
 				final int height = getHeight();
 
-				canvas.translate(-width + getPaddingLeft(),
+				canvas.translate(scrollX - width + getPaddingLeft(),
 						Math.max(getVerticalScrollRange(), scrollY) + height);
 				canvas.rotate(180, width, 0);
 				mEdgeGlowBottom.setSize(width, height);

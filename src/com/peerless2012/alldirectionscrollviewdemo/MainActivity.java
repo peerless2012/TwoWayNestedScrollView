@@ -11,6 +11,7 @@ import android.view.TouchDelegate;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements OnClickListener{
 	private ScrollView scrollView;
 	private HorizontalScrollView horizontalScrollView;
+	LinearLayout layout;
 	TextView textView;
 	StateListDrawable st;
 	private View touchDelegateParent;

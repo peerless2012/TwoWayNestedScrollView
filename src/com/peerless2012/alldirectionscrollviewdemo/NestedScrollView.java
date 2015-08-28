@@ -819,7 +819,6 @@ public class NestedScrollView extends FrameLayout implements
 			break;
 		}
 		case MotionEvent.ACTION_MOVE:
-			Log.i(TAG, "ACTION_MOVE  mIsBeingDragged  " + mIsBeingDragged+"   scrollDirection  " + scrollDirection);
 			final int activePointerIndex = MotionEventCompat.findPointerIndex(
 					ev, mActivePointerId);
 			if (activePointerIndex == -1) {
@@ -869,20 +868,21 @@ public class NestedScrollView extends FrameLayout implements
 					scrollDirection = DIRECTION_INVALIDATE;
 				}
 			}
-			if (mIsBeingDragged) {
+			if (mIsBeingDragged && scrollDirection != DIRECTION_INVALIDATE) {
 				if (scrollDirection == DIRECTION_VERTICAL) {
 					// Scroll to follow the motion event
 					mLastMotionY = y - mScrollOffset[1];
 
 					final int oldY = getScrollY();
-					final int range = getVerticalScrollRange();
+					final int horizontalRange = getHorizontalScrollRange();
+					final int verticalRange = getVerticalScrollRange();
 					final int overscrollMode = ViewCompat.getOverScrollMode(this);
 					boolean canOverscroll = overscrollMode == ViewCompat.OVER_SCROLL_ALWAYS
-							|| (overscrollMode == ViewCompat.OVER_SCROLL_IF_CONTENT_SCROLLS && range > 0);
+							|| (overscrollMode == ViewCompat.OVER_SCROLL_IF_CONTENT_SCROLLS && verticalRange > 0);
 
 					// Calling overScrollByCompat will call onOverScrolled, which
 					// calls onScrollChanged if applicable.
-					if (overScrollByCompat(0, deltaY, 0, getScrollY(), 0, range, 0,
+					if (overScrollByCompat(0, deltaY, getScrollX(), getScrollY(), horizontalRange, verticalRange, 0,
 							0, true) && !hasNestedScrollingParent()) {
 						// Break our velocity if we hit a scroll barrier.
 						mVelocityTracker.clear();
@@ -905,7 +905,7 @@ public class NestedScrollView extends FrameLayout implements
 							if (!mEdgeGlowBottom.isFinished()) {
 								mEdgeGlowBottom.onRelease();
 							}
-						} else if (pulledToY > range) {
+						} else if (pulledToY > verticalRange) {
 							mEdgeGlowBottom.onPull(
 									(float) deltaY / getHeight(),
 									1.f
@@ -927,14 +927,15 @@ public class NestedScrollView extends FrameLayout implements
 					mLastMotionX = x - mScrollOffset[0];
 					
 					final int oldX = getScrollX();
-					final int range = getHorizontalScrollRange();
+					final int horizontalRange = getHorizontalScrollRange();
+					final int verticalRange = getVerticalScrollRange();
 					final int overscrollMode = ViewCompat.getOverScrollMode(this);
 					boolean canOverscroll = overscrollMode == ViewCompat.OVER_SCROLL_ALWAYS
-							|| (overscrollMode == ViewCompat.OVER_SCROLL_IF_CONTENT_SCROLLS && range > 0);
+							|| (overscrollMode == ViewCompat.OVER_SCROLL_IF_CONTENT_SCROLLS && horizontalRange > 0);
 
 					// Calling overScrollByCompat will call onOverScrolled, which
 					// calls onScrollChanged if applicable.
-					if (overScrollByCompat(deltaX, 0, getScrollX(), 0, range, 0, 0,
+					if (overScrollByCompat(deltaX, 0, getScrollX(), getScrollY(), horizontalRange, verticalRange, 0,
 							0, true) && !hasNestedScrollingParent()) {
 						// Break our velocity if we hit a scroll barrier.
 						mVelocityTracker.clear();
@@ -957,7 +958,7 @@ public class NestedScrollView extends FrameLayout implements
 							if (!mEdgeGlowRight.isFinished()) {
 								mEdgeGlowRight.onRelease();
 							}
-						} else if (pulledToX > range) {
+						} else if (pulledToX > horizontalRange) {
 							mEdgeGlowRight.onPull(
 									(float) deltaX / getWidth(),
 									1.f
@@ -1092,6 +1093,7 @@ public class NestedScrollView extends FrameLayout implements
 
 	protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX,
 			boolean clampedY) {
+		Log.i("NestedScrollView", "scrollX "+scrollX+"   scrollY  "+scrollY);
 		super.scrollTo(scrollX, scrollY);
 	}
 
@@ -1616,7 +1618,6 @@ public class NestedScrollView extends FrameLayout implements
 			int oldY = getScrollY();
 			int x = mScroller.getCurrX();
 			int y = mScroller.getCurrY();
-//			Log.i(TAG, "computeScroll  currentX  " +x +"    currentY  " + y );
 			if (oldX != x || oldY != y) {
 				final int horizontalRange = getHorizontalScrollRange();
 				final int verticalRange = getVerticalScrollRange();

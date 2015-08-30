@@ -989,11 +989,11 @@ public class NestedScrollView extends FrameLayout implements
 
 				if (scrollDirection == DIRECTION_VERTICAL) {
 					if ((Math.abs(verticalInitialVelocity) > mMinimumVelocity)) {
-//						flingWithNestedDispatchVertical(-verticalInitialVelocity);
+						flingWithNestedDispatchVertical(-verticalInitialVelocity);
 					}
 				}else if (scrollDirection == DIRECTION_HORIZONTAL){
 					if ((Math.abs(horizontalInitialVelocity) > mMinimumVelocity)) {
-//						flingWithNestedDispatchHorizontal(-horizontalInitialVelocity);
+						flingWithNestedDispatchHorizontal(-horizontalInitialVelocity);
 					}
 				}
 				mActivePointerId = INVALID_POINTER;
@@ -1906,12 +1906,14 @@ public class NestedScrollView extends FrameLayout implements
 	 *            we want to scroll towards the top.
 	 */
 	public void flingVertical(int velocityY) {
+		//TODO ............
 		if (getChildCount() > 0) {
 			int width = getWidth() - getPaddingRight() - getPaddingLeft();
 			int height = getHeight() - getPaddingBottom() - getPaddingTop();
 			int bottom = getChildAt(0).getHeight();
 
-			mScroller.fling(getScrollX(), getScrollY(), 0, velocityY, 0, width, 0,Math.max(0, bottom - height),width/2,0);
+			int scrollX = getScrollX();
+			mScroller.fling(scrollX, getScrollY(), 0, velocityY, scrollX, scrollX, 0,Math.max(0, bottom - height),width/2,0);
 
 			ViewCompat.postInvalidateOnAnimation(this);
 		}
@@ -1926,7 +1928,9 @@ public class NestedScrollView extends FrameLayout implements
 			int width = getWidth() - getPaddingRight() - getPaddingLeft();
 			int height = getHeight() - getPaddingBottom() - getPaddingTop();
 			int right = getChildAt(0).getWidth();
-			mScroller.fling(getScrollX(), getScrollY(), velocityX, 0,0, Math.max(0, right - width), 0, height,0,height / 2);
+			
+			int scrollY = getScrollY();
+			mScroller.fling(getScrollX(), scrollY, velocityX, 0,0, Math.max(0, right - width), scrollY, scrollY,0,height / 2);
 			ViewCompat.postInvalidateOnAnimation(this);
 		}
 	}

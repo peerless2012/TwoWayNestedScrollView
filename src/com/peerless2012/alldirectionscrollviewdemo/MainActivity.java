@@ -13,12 +13,14 @@ import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener{
 	private ScrollView scrollView;
 	private HorizontalScrollView horizontalScrollView;
+	private Scroller scroller;
 	LinearLayout layout;
 	TextView textView;
 	StateListDrawable st;

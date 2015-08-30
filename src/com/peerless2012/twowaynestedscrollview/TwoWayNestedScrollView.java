@@ -16,10 +16,12 @@
 package com.peerless2012.twowaynestedscrollview;
 
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -169,6 +171,7 @@ public class TwoWayNestedScrollView extends FrameLayout implements
 	public TwoWayNestedScrollView(Context context, AttributeSet attrs,
 			int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
+		
 		initScrollView();
 
 		final TypedArray a = context.obtainStyledAttributes(attrs,
@@ -2003,7 +2006,10 @@ public class TwoWayNestedScrollView extends FrameLayout implements
 			mEdgeGlowRight = null;
 		}
 	}
-
+	@Override
+	public int getSolidColor() {
+		return Color.BLUE;
+	}
 	@Override
 	public void draw(Canvas canvas) {
 		super.draw(canvas);

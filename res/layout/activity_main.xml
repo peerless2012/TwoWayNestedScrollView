@@ -2,32 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:id="@+id/touch_delegate_parent"
-    tools:context="com.peerless2012.alldirectionscrollviewdemo.MainActivity" >
+    tools:context="com.peerless2012.twowaynestedscrollview.MainActivity" >
 
-    <TextView
-        android:id="@+id/touch_delegate_target"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:background="@android:color/darker_gray"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-    <com.peerless2012.alldirectionscrollviewdemo.NestedScrollView 
+    <com.peerless2012.twowaynestedscrollview.TwoWayNestedScrollView
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"
         >
-        
         <TextView
             android:textSize="22sp"
             android:text="@string/action_settings" 
             android:layout_width="2000dp"
             android:layout_height="wrap_content"/>
-    </com.peerless2012.alldirectionscrollviewdemo.NestedScrollView>
+    </com.peerless2012.twowaynestedscrollview.TwoWayNestedScrollView>
 </RelativeLayout>

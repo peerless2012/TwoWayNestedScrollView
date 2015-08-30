@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peerless2012.alldirectionscrollviewdemo;
+package com.peerless2012.twowaynestedscrollview;
 
 import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -59,7 +58,7 @@ import android.widget.ScrollView;
  * @author wangzhiming Describe: 2015年8月24日 下午5:36:19
  */
 @SuppressLint("Override")
-public class NestedScrollView extends FrameLayout implements
+public class TwoWayNestedScrollView extends FrameLayout implements
 		NestedScrollingParent, NestedScrollingChild {
 	static final int ANIMATED_SCROLL_GAP = 250;
 
@@ -159,15 +158,15 @@ public class NestedScrollView extends FrameLayout implements
 
 	private float mVerticalScrollFactor;
 
-	public NestedScrollView(Context context) {
+	public TwoWayNestedScrollView(Context context) {
 		this(context, null);
 	}
 
-	public NestedScrollView(Context context, AttributeSet attrs) {
+	public TwoWayNestedScrollView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public NestedScrollView(Context context, AttributeSet attrs,
+	public TwoWayNestedScrollView(Context context, AttributeSet attrs,
 			int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		initScrollView();
@@ -2185,7 +2184,7 @@ public class NestedScrollView extends FrameLayout implements
 			if (super.performAccessibilityAction(host, action, arguments)) {
 				return true;
 			}
-			final NestedScrollView nsvHost = (NestedScrollView) host;
+			final TwoWayNestedScrollView nsvHost = (TwoWayNestedScrollView) host;
 			if (!nsvHost.isEnabled()) {
 				return false;
 			}
@@ -2229,7 +2228,7 @@ public class NestedScrollView extends FrameLayout implements
 		public void onInitializeAccessibilityNodeInfo(View host,
 				AccessibilityNodeInfoCompat info) {
 			super.onInitializeAccessibilityNodeInfo(host, info);
-			final NestedScrollView nsvHost = (NestedScrollView) host;
+			final TwoWayNestedScrollView nsvHost = (TwoWayNestedScrollView) host;
 			info.setClassName(ScrollView.class.getName());
 			if (nsvHost.isEnabled()) {
 				final int verticalScrollRange = nsvHost.getVerticalScrollRange();
@@ -2258,7 +2257,7 @@ public class NestedScrollView extends FrameLayout implements
 		public void onInitializeAccessibilityEvent(View host,
 				AccessibilityEvent event) {
 			super.onInitializeAccessibilityEvent(host, event);
-			final NestedScrollView nsvHost = (NestedScrollView) host;
+			final TwoWayNestedScrollView nsvHost = (TwoWayNestedScrollView) host;
 			event.setClassName(ScrollView.class.getName());
 			final AccessibilityRecordCompat record = AccessibilityEventCompat
 					.asRecord(event);

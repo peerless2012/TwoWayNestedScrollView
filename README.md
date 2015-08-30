@@ -1,1 +1,2 @@
-#AllDirectionScrollViewDemo
+#TwoWayNestedScrollView
+TwoWayNestedScrollView 是一个ScrollView参照NestedScrollView，实现普通ScrollView垂直滚动和HorizontalScrollView水平滚动的ScrollView，由于是基于support包的NestedScrollView，所以也支持Android5.0上实现的nested功能，和parent实现混合滚动效果

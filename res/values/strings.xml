@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AllDirectionScrollViewDemo</string>
+    <string name="app_name">TwoWayNestedScrollView</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">乍眼一看可能不明白这个效果是怎么完成的。我们先仔细看看上面的边就会发现，白色的边的宽度不断从右边往左边延伸，而一条稍微延时的边紧跟着一起移动。每条边都有这样的做法。看起来就像上面的边经过拐角移动到了左边，并以此类推。
 \n不用SVG也能完成这样的效果，甚至只用伪元素。但是我们想探索一下怎样用CSS而不是JavaScript来控制SVG。\n

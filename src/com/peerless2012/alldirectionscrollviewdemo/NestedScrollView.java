@@ -16,6 +16,7 @@
 package com.peerless2012.alldirectionscrollviewdemo;
 
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -578,8 +579,6 @@ public class NestedScrollView extends FrameLayout implements
 			return false;
 		}
 
-		//TODO .........
-		
 		boolean handled = false;
 		if (event.getAction() == KeyEvent.ACTION_DOWN) {
 			switch (event.getKeyCode()) {
@@ -702,7 +701,7 @@ public class NestedScrollView extends FrameLayout implements
 			final int xDiff = Math.abs(x - mLastMotionX);
 			final int y = (int) MotionEventCompat.getY(ev, pointerIndex);
 			final int yDiff = Math.abs(y - mLastMotionY);
-			//TODO .........
+			
 			if (yDiff > mTouchSlop && (getNestedScrollAxes() & ViewCompat.SCROLL_AXIS_VERTICAL) == 0) {
 				mIsBeingDragged = true;
 				mLastMotionY = y;
@@ -1035,7 +1034,6 @@ public class NestedScrollView extends FrameLayout implements
 		if (pointerId == mActivePointerId) {
 			// This was our active pointer going up. Choose a new
 			// active pointer and adjust accordingly.
-			// TODO: Make this decision more intelligent.
 			final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
 			mLastMotionX = (int) MotionEventCompat.getX(ev, newPointerIndex);
 			mLastMotionY = (int) MotionEventCompat.getY(ev, newPointerIndex);
@@ -1620,7 +1618,6 @@ public class NestedScrollView extends FrameLayout implements
 			int oldY = getScrollY();
 			int x = mScroller.getCurrX();
 			int y = mScroller.getCurrY();
-			Log.i("NestedScrollView", "oldX = "+oldX+"   oldY = "+oldY+"    x = "+x+"   y = "+y);
 			if (oldX != x || oldY != y) {
 				final int horizontalRange = getHorizontalScrollRange();
 				final int verticalRange = getVerticalScrollRange();
@@ -2014,61 +2011,96 @@ public class NestedScrollView extends FrameLayout implements
 		super.draw(canvas);
 		if (mEdgeGlowTop != null) {
 			final int scrollX = getScrollX();
-			//TODO 修正
-//			if (!mEdgeGlowLeft.isFinished()) {
-//				final int restoreCount = canvas.save();
-//				final int height = getHeight() - getPaddingTop()
-//						- getPaddingBottom();
-//				
-//				canvas.translate(getPaddingLeft(), Math.min(0, scrollX));
-//				mEdgeGlowLeft.setSize(getWidth(), height);
-//				if (mEdgeGlowLeft.draw(canvas)) {
-//					ViewCompat.postInvalidateOnAnimation(this);
-//				}
-//				canvas.restoreToCount(restoreCount);
-//			}
-//			if (!mEdgeGlowRight.isFinished()) {
-//				final int restoreCount = canvas.save();
-//				final int height = getHeight() - getPaddingTop()
-//						- getPaddingBottom();
-//
-//				canvas.translate(-height + getPaddingTop(),
-//						Math.max(getHorizontalScrollRange(), scrollX) + height);
-//				canvas.rotate(180, 0, height);
-//				mEdgeGlowRight.setSize(getWidth(), height);
-//				if (mEdgeGlowRight.draw(canvas)) {
-//					ViewCompat.postInvalidateOnAnimation(this);
-//				}
-//				canvas.restoreToCount(restoreCount);
-//			}
 			final int scrollY = getScrollY();
-			if (!mEdgeGlowTop.isFinished()) {
-				final int restoreCount = canvas.save();
-				final int width = getWidth() - getPaddingLeft()
-						- getPaddingRight();
+			if (scrollDirection == DIRECTION_HORIZONTAL) {
+//				if (!mEdgeGlowLeft.isFinished()) {
+//					Log.i("NestedScrollView", "draw 水平 左侧");
+//					final int restoreCount = canvas.save();
+//					final int height = getHeight() - getPaddingTop()
+//							- getPaddingBottom();
+//					
+//					canvas.translate(getPaddingLeft(), height);
+//					canvas.rotate(-90);
+//					mEdgeGlowLeft.setSize(getWidth(), height);
+//					if (mEdgeGlowLeft.draw(canvas)) {
+//						ViewCompat.postInvalidateOnAnimation(this);
+//					}
+//					canvas.restoreToCount(restoreCount);
+//				}
+//				if (!mEdgeGlowRight.isFinished()) {
+//					Log.i("NestedScrollView", "draw 水平 右侧");
+//					final int restoreCount = canvas.save();
+//					final int height = getHeight() - getPaddingTop()
+//							- getPaddingBottom();
+//
+//					canvas.translate(getPaddingLeft() + getWidth(),height);
+//					canvas.rotate(90);
+//					mEdgeGlowRight.setSize(getWidth(), height);
+//					if (mEdgeGlowRight.draw(canvas)) {
+//						ViewCompat.postInvalidateOnAnimation(this);
+//					}
+//					canvas.restoreToCount(restoreCount);
+//				}
+				
+				if (!mEdgeGlowLeft.isFinished()) {
+	                final int restoreCount = canvas.save();
+	                final int height = getHeight() - getPaddingTop() - getPaddingBottom();
 
-				canvas.translate(scrollX + getPaddingLeft(), Math.min(0, scrollY));
-				mEdgeGlowTop.setSize(width, getHeight());
-				if (mEdgeGlowTop.draw(canvas)) {
-					ViewCompat.postInvalidateOnAnimation(this);
-				}
-				canvas.restoreToCount(restoreCount);
-			}
-			if (!mEdgeGlowBottom.isFinished()) {
-				final int restoreCount = canvas.save();
-				final int width = getWidth() - getPaddingLeft()
-						- getPaddingRight();
-				final int height = getHeight();
+	                canvas.rotate(270);
+	                canvas.translate(-height + getPaddingTop() - scrollY, Math.min(0, scrollX));
+	                mEdgeGlowLeft.setSize(height, getWidth());
+	                if (mEdgeGlowLeft.draw(canvas)) {
+	                    invalidate();
+	                }
+	                canvas.restoreToCount(restoreCount);
+	            }
+	            if (!mEdgeGlowRight.isFinished()) {
+	                final int restoreCount = canvas.save();
+	                final int width = getWidth();
+	                final int height = getHeight() - getPaddingTop() - getPaddingBottom();
 
-				canvas.translate(scrollX - width + getPaddingLeft(),
-						Math.max(getVerticalScrollRange(), scrollY) + height);
-				canvas.rotate(180, width, 0);
-				mEdgeGlowBottom.setSize(width, height);
-				if (mEdgeGlowBottom.draw(canvas)) {
-					ViewCompat.postInvalidateOnAnimation(this);
+	                canvas.rotate(90);
+	                canvas.translate(-getPaddingTop() + scrollY,
+	                        -(Math.max(getHorizontalScrollRange(), scrollX) + width));
+	                mEdgeGlowRight.setSize(height, width);
+	                if (mEdgeGlowRight.draw(canvas)) {
+	                    invalidate();
+	                }
+	                canvas.restoreToCount(restoreCount);
+	            }
+			}else if (scrollDirection == DIRECTION_VERTICAL) {
+				if (!mEdgeGlowTop.isFinished()) {
+					final int restoreCount = canvas.save();
+					final int width = getWidth() - getPaddingLeft()
+							- getPaddingRight();
+
+					canvas.translate(scrollX + getPaddingLeft(), Math.min(0, scrollY));
+					mEdgeGlowTop.setSize(width, getHeight());
+					if (mEdgeGlowTop.draw(canvas)) {
+						ViewCompat.postInvalidateOnAnimation(this);
+					}
+					canvas.restoreToCount(restoreCount);
 				}
-				canvas.restoreToCount(restoreCount);
+				if (!mEdgeGlowBottom.isFinished()) {
+					final int restoreCount = canvas.save();
+					final int width = getWidth() - getPaddingLeft()
+							- getPaddingRight();
+					final int height = getHeight();
+
+					canvas.translate(scrollX - width + getPaddingLeft(),
+							Math.max(getVerticalScrollRange(), scrollY) + height);
+					canvas.rotate(180, width, 0);
+					mEdgeGlowBottom.setSize(width, height);
+					if (mEdgeGlowBottom.draw(canvas)) {
+						ViewCompat.postInvalidateOnAnimation(this);
+					}
+					canvas.restoreToCount(restoreCount);
+				}
+			}else {
+				//do nothing
 			}
+			
+			
 		}
 	}
 
